@@ -27,9 +27,9 @@ session_start();
 
 // Infrastructure
 $pdo = new PDO(
-    'mysql:host=localhost;dbname=notes;charset=utf8',
-    'root',
-    '',
+    'mysql:host=localhost;port=3307;dbname=notes;charset=utf8mb4',
+    'app',
+    'app123',
     [PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC, PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
 );
 
@@ -70,5 +70,6 @@ $router->post('/api/logout',                  $logoutController);
 $router->post('/api/notes',                   [$noteController, 'store']);
 $router->get('/api/notes/{id}',               [$noteController, 'show']);
 $router->get('/api/tags',                     [$tagController, 'index']);
+$router->get('/api/test', function(){ echo json_encode(['message' => 'API OK' ]); });
 
 $router->dispatch();
