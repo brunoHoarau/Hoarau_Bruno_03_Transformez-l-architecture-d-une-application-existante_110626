@@ -51,6 +51,18 @@ class PdoNoteRepository implements NoteRepositoryInterface, NoteQueryInterface
         ]);
     }
 
+    public function update(Note $note): void
+    {
+        $stmt = $this->pdo->prepare("UPDATE notes SET tag_id = ?, text = ? WHERE id = ?");
+        $stmt->execute([$note->getTagId(), $note->getText(), $note->getId()]);
+    }
+
+    public function delete(int $id): void
+    {
+        $stmt = $this->pdo->prepare("DELETE FROM notes WHERE id = ?");
+        $stmt->execute([$id]);
+    }
+
     public function findWithUser(int $id): array
     {
         $stmt = $this->pdo->prepare("

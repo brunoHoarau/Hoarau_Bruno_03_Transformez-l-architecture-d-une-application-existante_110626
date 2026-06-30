@@ -2,6 +2,21 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
+// CORS — autorise le front React en développement
+$allowedOrigins = ['http://localhost:5173', 'http://localhost:3000'];
+$origin = $_SERVER['HTTP_ORIGIN'] ?? '';
+if (in_array($origin, $allowedOrigins, true)) {
+    header("Access-Control-Allow-Origin: $origin");
+}
+header('Access-Control-Allow-Credentials: true');
+header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
+header('Access-Control-Allow-Headers: Content-Type');
+
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    http_response_code(204);
+    exit;
+}
+
 use App\Core\Router;
 use App\Repositories\PdoUserRepository;
 use App\Repositories\PdoNoteRepository;
@@ -27,9 +42,14 @@ session_start();
 
 // Infrastructure
 $pdo = new PDO(
-    'mysql:host=localhost;port=3307;dbname=notes;charset=utf8mb4',
-    'app',
-    'app123',
+    sprintf(
+        'mysql:host=%s;port=%s;dbname=%s;charset=utf8mb4',
+        getenv('DB_HOST') ?: 'localhost',
+        getenv('DB_PORT') ?: '3307',
+        getenv('DB_NAME') ?: 'notes'
+    ),
+    getenv('DB_USER') ?: 'app',
+    getenv('DB_PASS') ?: 'app123',
     [PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC, PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
 );
 
@@ -67,9 +87,12 @@ $router->post('/api/login',                   $loginController);
 $router->post('/api/register',                $registerController);
 $router->get('/api/verify-email/{id}/{hash}', $verifyEmailController);
 $router->post('/api/logout',                  $logoutController);
-$router->post('/api/notes',                   [$noteController, 'store']);
-$router->get('/api/notes/{id}',               [$noteController, 'show']);
+$router->get('/api/notes',                    [$noteController, 'indexNote']);
+$router->post('/api/notes',                   [$noteController, 'createNote']);
+$router->get('/api/notes/{id}',               [$noteController, 'showNote']);
+$router->put('/api/notes/{id}',               [$noteController, 'updateNote']);
+$router->delete('/api/notes/{id}',            [$noteController, 'deleteNote']);
 $router->get('/api/tags',                     [$tagController, 'index']);
-$router->get('/api/test', function(){ echo json_encode(['message' => 'API OK' ]); });
+$router->get('/api/test', function(){ echo json_encode(['status' => 'success', 'message' => 'API OK', 'data' => null]); });
 
 $router->dispatch();

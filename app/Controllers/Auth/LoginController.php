@@ -17,9 +17,9 @@ class LoginController extends UserController
 
         try {
             $this->service->login($data['email'], $data['password']);
-            $this->json(['message' => 'Logged in']);
+            $this->success(null, 'Logged in');
         } catch (\Exception $e) {
-            $this->json(['error' => $e->getMessage()], 401);
+            $this->error($e->getMessage(), 401);
         }
     }
 }

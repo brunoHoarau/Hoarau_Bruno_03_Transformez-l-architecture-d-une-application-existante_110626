@@ -12,6 +12,6 @@ class TagController extends UserController
 
     public function index(): void
     {
-        $this->json($this->service->getTags());
+        $this->success($this->service->getTags());
     }
 }

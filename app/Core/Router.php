@@ -64,7 +64,7 @@ class Router
 
         http_response_code(404);
         header('Content-Type: application/json');
-        echo json_encode(['error' => 'Route not found']);
+        echo json_encode(['status' => 'error', 'message' => 'Route not found', 'data' => null]);
     }
 
     /**

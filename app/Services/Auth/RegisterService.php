@@ -27,6 +27,13 @@ class RegisterService implements RegisterServiceInterface
 
         $user->setEmailVerificationToken($this->tokenGenerator->generate());
 
-        $this->users->save($user);
+        try {
+            $this->users->save($user);
+        } catch (\PDOException $e) {
+            if (str_contains($e->getMessage(), 'Duplicate entry')) {
+                throw new \Exception("Email already in use");
+            }
+            throw $e;
+        }
     }
 }

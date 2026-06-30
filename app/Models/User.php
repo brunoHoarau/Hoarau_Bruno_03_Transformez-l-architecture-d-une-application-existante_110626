@@ -28,7 +28,7 @@ class User
     public function getName(): string { return $this->name; }
     public function getEmail(): string { return $this->email; }
     public function getPassword(): string { return $this->password; }
-    // public function getEmailVerificationToken(): ?string { return $this->emailVerificationToken; }
+    public function getEmailVerificationToken(): ?string { return $this->emailVerificationToken; }
 
 
 

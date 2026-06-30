@@ -2,32 +2,30 @@
 
 namespace App\Repositories;
 
-use PDO;
 use App\Models\User;
 
-class UserRepository implements UserRepositoryInterface
+/**
+ * Contrat de persistance pour les utilisateurs.
+ */
+interface UserRepositoryInterface
 {
-    public function __construct(private PDO $pdo) {}
+    /**
+     * Recherche un utilisateur par son identifiant.
+     *
+     * @return User|null null si non trouvé
+     */
+    public function findById(int $id): ?User;
 
-    public function findByEmail(string $email): ?User
-    {
-        $stmt = $this->pdo->prepare("
-            SELECT * FROM users WHERE email = ?
-        ");
+    /**
+     * Recherche un utilisateur par son adresse email.
+     *
+     * @return User|null null si non trouvé
+     */
+    public function findByEmail(string $email): ?User;
 
-        $stmt->execute([$email]);
-
-        $data = $stmt->fetch();
-
-        if (!$data) {
-            return null;
-        }
-
-        return new User(
-            $data['id'],
-            $data['name'],
-            $data['email'],
-            $data['password']
-        );
-    }
+    /**
+     * Insère ou met à jour un utilisateur en base.
+     * INSERT si l'id est null, UPDATE sinon.
+     */
+    public function save(User $user): void;
 }

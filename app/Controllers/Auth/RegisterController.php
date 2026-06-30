@@ -17,9 +17,9 @@ class RegisterController extends UserController
 
         try {
             $this->service->register($data['name'], $data['email'], $data['password']);
-            $this->json(['message' => 'User created'], 201);
+            $this->success(null, 'User created', 201);
         } catch (\Exception $e) {
-            $this->json(['error' => $e->getMessage()], 400);
+            $this->error($e->getMessage(), 400);
         }
     }
 }

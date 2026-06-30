@@ -28,6 +28,11 @@ class NoteService implements NoteServiceInterface
         $this->notes->save(new Note(null, $userId, $tagId, $text));
     }
 
+    public function listByUser(int $userId): array
+    {
+        return $this->notes->findByUserId($userId);
+    }
+
     /**
      * @throws \Exception Si la note n'existe pas
      */
@@ -48,5 +53,37 @@ class NoteService implements NoteServiceInterface
             'note_user' => $this->noteQuery->findWithUser($id),
             'note_tag'  => $this->noteQuery->findWithTag($id)
         ];
+    }
+
+    public function update(int $id, int $userId, int $tagId, string $text): void
+    {
+        $note = $this->notes->findById($id);
+
+        if (!$note) {
+            throw new \Exception("Note not found");
+        }
+
+        if ($note->getUserId() !== $userId) {
+            throw new \Exception("Forbidden");
+        }
+
+        $note->updateText($text);
+        $note->updateTagId($tagId);
+        $this->notes->update($note);
+    }
+
+    public function delete(int $id, int $userId): void
+    {
+        $note = $this->notes->findById($id);
+
+        if (!$note) {
+            throw new \Exception("Note not found");
+        }
+
+        if ($note->getUserId() !== $userId) {
+            throw new \Exception("Forbidden");
+        }
+
+        $this->notes->delete($id);
     }
 }

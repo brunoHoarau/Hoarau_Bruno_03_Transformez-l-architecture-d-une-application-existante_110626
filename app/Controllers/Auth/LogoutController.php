@@ -14,6 +14,6 @@ class LogoutController extends UserController
     public function __invoke(): void
     {
         $this->service->logout();
-        $this->json(['message' => 'Logged out']);
+        $this->success(null, 'Logged out');
     }
 }

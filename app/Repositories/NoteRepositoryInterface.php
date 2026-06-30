@@ -23,4 +23,10 @@ interface NoteRepositoryInterface
 
     /** Insère une note en base. */
     public function save(Note $note): void;
+
+    /** Met à jour le texte et le tag d'une note existante. */
+    public function update(Note $note): void;
+
+    /** Supprime une note par son identifiant. */
+    public function delete(int $id): void;
 }

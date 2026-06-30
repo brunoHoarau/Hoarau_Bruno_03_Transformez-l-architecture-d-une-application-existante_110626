@@ -5,7 +5,7 @@ namespace App\Models;
 /**
  * Représente une note créée par un utilisateur.
  */
-class Note
+class Note implements \JsonSerializable
 {
     /**
      * @param int|null $id     Identifiant en base (null avant la première sauvegarde)
@@ -28,5 +28,15 @@ class Note
     public function updateText(string $text): void
     {
         $this->text = $text;
+    }
+
+    public function updateTagId(int $tagId): void
+    {
+        $this->tagId = $tagId;
+    }
+
+    public function jsonSerialize(): mixed
+    {
+        return ['id' => $this->id, 'user_id' => $this->userId, 'tag_id' => $this->tagId, 'text' => $this->text];
     }
 }

@@ -10,13 +10,17 @@ namespace App\Controllers;
  */
 abstract class UserController
 {
-    /**
-     * Envoie une réponse JSON.
-     *
-     * @param mixed $data   Données à sérialiser
-     * @param int   $status Code HTTP (200 par défaut)
-     */
-    protected function json(mixed $data, int $status = 200): void
+    protected function success(mixed $data = null, string $message = '', int $status = 200): void
+    {
+        $this->json(['status' => 'success', 'message' => $message, 'data' => $data], $status);
+    }
+
+    protected function error(string $message, int $status = 400): void
+    {
+        $this->json(['status' => 'error', 'message' => $message, 'data' => null], $status);
+    }
+
+    private function json(mixed $data, int $status): void
     {
         http_response_code($status);
         header('Content-Type: application/json');
