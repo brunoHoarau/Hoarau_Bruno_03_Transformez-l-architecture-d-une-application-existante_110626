@@ -10,6 +10,8 @@ return new class
                 name VARCHAR(50) NOT NULL,
                 email VARCHAR(100) NOT NULL UNIQUE,
                 password VARCHAR(255) NOT NULL,
+                email_verified_at TIMESTAMP NULL DEFAULT NULL,
+                email_verification_token VARCHAR(64) NULL DEFAULT NULL,
                 created_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
                 updated_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
             )

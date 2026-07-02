@@ -65,7 +65,7 @@ $tokenGen = new TokenGenerator();
 
 // Services
 $loginService       = new LoginService($userRepo, $hasher, $session);
-$registerService    = new RegisterService($userRepo, $hasher, $tokenGen);
+$registerService    = new RegisterService($userRepo, $hasher);
 $logoutService      = new LogoutService($session);
 $verifyEmailService = new VerifyEmailService($userRepo);
 $noteService        = new NoteService($noteRepo, $noteRepo);
