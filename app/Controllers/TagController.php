@@ -15,6 +15,23 @@ class TagController extends UserController
         $this->success($this->service->getTags());
     }
 
+    public function deleteTag(int $id): void
+    {
+        $userId = $_SESSION['user_id'] ?? null;
+
+        if (!$userId) {
+            $this->error('Unauthenticated', 401);
+            return;
+        }
+
+        try {
+            $this->service->delete($id);
+            $this->success(null, 'Tag deleted');
+        } catch (\Exception $e) {
+            $this->error($e->getMessage(), 404);
+        }
+    }
+
     public function createTag(): void
     {
         $userId = $_SESSION['user_id'] ?? null;

@@ -94,6 +94,7 @@ $router->put('/api/notes/{id}',               [$noteController, 'updateNote']);
 $router->delete('/api/notes/{id}',            [$noteController, 'deleteNote']);
 $router->get('/api/tags',                     [$tagController, 'index']);
 $router->post('/api/tags',                    [$tagController, 'createTag']);
+$router->delete('/api/tags/{id}',             [$tagController, 'deleteTag']);
 $router->get('/api/test', function(){ echo json_encode(['status' => 'success', 'message' => 'API OK', 'data' => null]); });
 
 $router->dispatch();

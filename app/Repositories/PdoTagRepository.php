@@ -34,11 +34,14 @@ class PdoTagRepository implements TagRepositoryInterface
 
     public function save(Tag $tag): void
     {
-        $stmt = $this->pdo->prepare("
-            INSERT INTO tags (name) VALUES (?)
-        ");
-
+        $stmt = $this->pdo->prepare("INSERT INTO tags (name) VALUES (?)");
         $stmt->execute([$tag->getName()]);
+    }
+
+    public function delete(int $id): void
+    {
+        $stmt = $this->pdo->prepare("DELETE FROM tags WHERE id = ?");
+        $stmt->execute([$id]);
     }
 
     public function findByNoteId(int $noteId): array

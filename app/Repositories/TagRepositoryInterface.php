@@ -24,6 +24,9 @@ interface TagRepositoryInterface
     /** Insère un tag en base. */
     public function save(Tag $tag): void;
 
+    /** Supprime un tag par son identifiant. */
+    public function delete(int $id): void;
+
     /**
      * Retourne les tags associés à une note via la table de liaison note_tag.
      *

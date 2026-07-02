@@ -24,6 +24,17 @@ class TagService implements TagServiceInterface
         $this->tags->save(new \App\Models\Tag(null, $name));
     }
 
+    public function delete(int $id): void
+    {
+        $tag = $this->tags->findById($id);
+
+        if (!$tag) {
+            throw new \Exception("Tag not found");
+        }
+
+        $this->tags->delete($id);
+    }
+
     /** @return \App\Models\Tag[] */
     public function getNotesByTag(int $tagId): array
     {
