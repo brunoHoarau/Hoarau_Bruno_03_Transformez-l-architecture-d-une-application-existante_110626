@@ -3,7 +3,7 @@
 require_once __DIR__ . '/../vendor/autoload.php';
 
 // CORS — autorise le front React en développement
-$allowedOrigins = ['http://localhost:5173', 'http://localhost:3000'];
+$allowedOrigins = ['http://localhost:5173', 'http://localhost:5174', 'http://localhost:3000'];
 $origin = $_SERVER['HTTP_ORIGIN'] ?? '';
 if (in_array($origin, $allowedOrigins, true)) {
     header("Access-Control-Allow-Origin: $origin");

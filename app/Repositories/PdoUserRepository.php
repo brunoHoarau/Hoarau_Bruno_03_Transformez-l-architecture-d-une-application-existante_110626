@@ -72,10 +72,10 @@ class PdoUserRepository implements UserRepositoryInterface
             $data['name'],
             $data['email'],
             $data['password'],
-            $data['email_verified_at']
-                ? new \DateTime($data['email_verified_at'])
-                : null,
-            $data['email_verification_token'] ?? null
+            // $data['email_verified_at']
+            //     ? new \DateTime($data['email_verified_at'])
+            //     : null,
+            // $data['email_verification_token'] ?? null
         );
     }
 }
