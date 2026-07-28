@@ -12,6 +12,9 @@ header('Access-Control-Allow-Credentials: true');
 header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type');
 
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../');
+$dotenv->load();
+
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     http_response_code(204);
     exit;
@@ -40,16 +43,27 @@ use App\Controllers\TagController;
 
 session_start();
 
+$host = $_ENV['DB_HOST'];
+$port = $_ENV['DB_PORT'];
+$dbname = $_ENV['DB_NAME'];
+$user = $_ENV['DB_USER'];
+$password = $_ENV['DB_PASS'];
+
 // Infrastructure
 $pdo = new PDO(
     sprintf(
         'mysql:host=%s;port=%s;dbname=%s;charset=utf8mb4',
-        getenv('DB_HOST') ?: 'localhost',
-        getenv('DB_PORT') ?: '3307',
-        getenv('DB_NAME') ?: 'notes'
-    ),
-    getenv('DB_USER') ?: 'app',
-    getenv('DB_PASS') ?: 'app123',
+        // getenv('DB_HOST') ?: 'localhost',
+        // getenv('DB_PORT') ?: '3307',
+        // getenv('DB_NAME') ?: 'notes'
+        $host,
+        $port,
+        $dbname
+        ),
+    // getenv('DB_USER') ?: 'app',
+    // getenv('DB_PASS') ?: 'app123',
+    $user,
+    $password,
     [PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC, PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
 );
 
