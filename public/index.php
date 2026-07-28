@@ -2,8 +2,13 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../');
+$dotenv->load();
+
 // CORS — autorise le front React en développement
-$allowedOrigins = ['http://localhost:5173', 'http://localhost:5174', 'http://localhost:3000'];
+// $allowedOrigins = ['http://localhost:5173', 'http://localhost:5174', 'http://localhost:3000'];
+$cors= $_ENV['CORS_ALLOWED_ORIGINS'];
+$allowedOrigins = array_map('trim', explode(',', $cors ));
 $origin = $_SERVER['HTTP_ORIGIN'] ?? '';
 if (in_array($origin, $allowedOrigins, true)) {
     header("Access-Control-Allow-Origin: $origin");
@@ -12,8 +17,7 @@ header('Access-Control-Allow-Credentials: true');
 header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type');
 
-$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../');
-$dotenv->load();
+
 
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     http_response_code(204);
